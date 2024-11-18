@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import * as Endpoints from './endpoints.json';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  getAllEndpoints(): string {
+    return JSON.stringify(Endpoints, null, '\t');
   }
 }
