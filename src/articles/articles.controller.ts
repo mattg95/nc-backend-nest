@@ -26,7 +26,9 @@ export class ArticlesController {
   }
 
   @Patch(':id')
-  @UsePipes(new ValidationPipe())
+  @UsePipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: false }),
+  )
   editArticle(@Body() body: editArticleDto) {
     return body;
   }
@@ -37,7 +39,7 @@ export class ArticlesController {
   }
 
   @Post(':id/comments')
-  @UsePipes(new ValidationPipe())
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   createComment(
     @Param('id', ParseIntPipe) id: string,
     @Query('sort_by') sortBy: 'votes',
