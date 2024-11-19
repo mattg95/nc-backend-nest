@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 
 @Controller('comments')
 export class CommentsController {
@@ -7,7 +7,7 @@ export class CommentsController {
     return 'All comments';
   }
   @Get(':id')
-  findOneComment(@Param('id') id: string) {
+  findOneComment(@Param('id', ParseIntPipe) id: string) {
     return id;
   }
 }

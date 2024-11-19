@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 
 @Controller('articles')
 export class ArticlesController {
@@ -8,17 +16,22 @@ export class ArticlesController {
   }
 
   @Get(':id')
-  findOneArticle(@Param('id') id: string) {
+  findOneArticle(@Param('id', ParseIntPipe) id: string) {
     return id;
   }
 
-  @Post()
+  @Patch(':id')
   createArticle(@Body() body) {
     return body;
   }
 
-  @Post(':id/comment')
-  createComment(@Param('id') id: string, @Body() body) {
+  @Get(':id/comments')
+  findOneComment(@Param('id', ParseIntPipe) id: string) {
+    return id;
+  }
+
+  @Post(':id/comments')
+  createComment(@Param('id', ParseIntPipe) id: string, @Body() body) {
     return `creating comment on article ${id}. Comment: ${JSON.stringify(body)}`;
   }
 }
