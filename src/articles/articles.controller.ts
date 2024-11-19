@@ -6,13 +6,14 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 
 @Controller('articles')
 export class ArticlesController {
   @Get()
-  findAllArticles() {
-    return 'All articles';
+  findAllArticles(@Query('sort_by') sortBy: 'comment_count') {
+    return `All articles, sorting by ${sortBy}`;
   }
 
   @Get(':id')
@@ -31,7 +32,11 @@ export class ArticlesController {
   }
 
   @Post(':id/comments')
-  createComment(@Param('id', ParseIntPipe) id: string, @Body() body) {
+  createComment(
+    @Param('id', ParseIntPipe) id: string,
+    @Query('sort_by') sortBy: 'votes',
+    @Body() body,
+  ) {
     return `creating comment on article ${id}. Comment: ${JSON.stringify(body)}`;
   }
 }
