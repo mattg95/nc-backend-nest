@@ -7,7 +7,11 @@ import {
   Patch,
   Post,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
+import { editArticleDto } from './dto/editArticle.dto';
+import { createCommentDto } from 'src/comments/dto/createComments.dto';
 
 @Controller('articles')
 export class ArticlesController {
@@ -22,7 +26,8 @@ export class ArticlesController {
   }
 
   @Patch(':id')
-  createArticle(@Body() body) {
+  @UsePipes(new ValidationPipe())
+  editArticle(@Body() body: editArticleDto) {
     return body;
   }
 
@@ -32,10 +37,11 @@ export class ArticlesController {
   }
 
   @Post(':id/comments')
+  @UsePipes(new ValidationPipe())
   createComment(
     @Param('id', ParseIntPipe) id: string,
     @Query('sort_by') sortBy: 'votes',
-    @Body() body,
+    @Body() body: createCommentDto,
   ) {
     return `creating comment on article ${id}. Comment: ${JSON.stringify(body)}`;
   }
