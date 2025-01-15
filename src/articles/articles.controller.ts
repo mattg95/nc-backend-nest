@@ -25,8 +25,8 @@ export class ArticlesController {
   }
 
   @Get(':id')
-  findOneArticle(@Param('id', ParseIntPipe) id: string) {
-    this.articlesService.findOneArticle(id);
+  findOneArticle(@Param('id', ParseIntPipe) id: number) {
+    return this.articlesService.findOneArticle(id);
   }
 
   @Post(':id')

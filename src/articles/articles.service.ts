@@ -14,7 +14,13 @@ export class ArticlesService {
   ) {}
 
   findAllArticles(sortBy: sortByString) {}
-  findOneArticle(id: string) {}
+  findOneArticle(id: number) {
+    return this.articlesRepo.findOne({
+      where: {
+        id,
+      },
+    });
+  }
   editArticle(body: editArticleDto) {}
   findOneComment(id: string) {}
 
