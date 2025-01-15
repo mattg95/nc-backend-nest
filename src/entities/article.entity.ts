@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { DateTime } from 'luxon';
 
 @Entity()
 export class Article {
@@ -17,8 +23,14 @@ export class Article {
   @Column()
   body: string;
 
-  @Column()
-  createdAt: number;
+  @CreateDateColumn({
+    type: 'timestamp',
+    transformer: {
+      to: () => DateTime.now().toISO(), // Convert to ISO string on save
+      from: (value: string) => DateTime.fromISO(value), // Convert to DateTime on retrieval
+    },
+  })
+  createdAt: DateTime;
 
   @Column({ default: 0 })
   votes: number;
