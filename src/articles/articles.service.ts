@@ -1,7 +1,9 @@
 import { sortByString } from 'src/types';
 import { editArticleDto } from './dto/editArticle.dto';
 import { createCommentDto } from 'src/comments/dto/createComments.dto';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ArticlesService {
   findAllArticles(sortBy: sortByString) {}
   findOneArticle(id: string) {}

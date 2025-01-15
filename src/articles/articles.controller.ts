@@ -16,7 +16,7 @@ import { ArticlesService } from './articles.service';
 
 @Controller('articles')
 export class ArticlesController {
-  constructor(private articlesService: InstanceType<typeof ArticlesService>) {}
+  constructor(private readonly articlesService: ArticlesService) {}
 
   @Get()
   findAllArticles(@Query('sort_by') sortBy: 'comment_count') {
