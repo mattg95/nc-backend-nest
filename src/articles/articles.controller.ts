@@ -12,17 +12,20 @@ import {
 } from '@nestjs/common';
 import { editArticleDto } from './dto/editArticle.dto';
 import { createCommentDto } from 'src/comments/dto/createComments.dto';
+import { ArticlesService } from './articles.service';
 
 @Controller('articles')
 export class ArticlesController {
+  constructor(private articlesService: InstanceType<typeof ArticlesService>) {}
+
   @Get()
   findAllArticles(@Query('sort_by') sortBy: 'comment_count') {
-    return `All articles, sorting by ${sortBy}`;
+    return this.articlesService.findAllArticles(sortBy);
   }
 
   @Get(':id')
   findOneArticle(@Param('id', ParseIntPipe) id: string) {
-    return id;
+    this.articlesService.findOneArticle(id);
   }
 
   @Patch(':id')
@@ -30,12 +33,12 @@ export class ArticlesController {
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: false }),
   )
   editArticle(@Body() body: editArticleDto) {
-    return body;
+    this.articlesService.editArticle(body);
   }
 
   @Get(':id/comments')
   findOneComment(@Param('id', ParseIntPipe) id: string) {
-    return id;
+    this.articlesService.findOneComment(id);
   }
 
   @Post(':id/comments')
@@ -45,6 +48,6 @@ export class ArticlesController {
     @Query('sort_by') sortBy: 'votes',
     @Body() body: createCommentDto,
   ) {
-    return `creating comment on article ${id}. Comment: ${JSON.stringify(body)}`;
+    this.articlesService.createComment(id, sortBy, body);
   }
 }
