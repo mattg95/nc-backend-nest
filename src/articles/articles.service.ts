@@ -1,7 +1,7 @@
 import { sortByString } from 'src/types';
 import { editArticleDto } from './dto/editArticle.dto';
 import { createCommentDto } from 'src/comments/dto/createComments.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from 'src/entities/article.entity';
@@ -14,12 +14,15 @@ export class ArticlesService {
   ) {}
 
   findAllArticles(sortBy: sortByString) {}
-  findOneArticle(id: number) {
-    return this.articlesRepo.findOne({
+  async findOneArticle(id: number) {
+    const article = await this.articlesRepo.findOne({
       where: {
         id,
       },
     });
+    console.log(article);
+    if (!article) throw new NotFoundException();
+    return article;
   }
   editArticle(body: editArticleDto) {}
   findOneComment(id: string) {}
