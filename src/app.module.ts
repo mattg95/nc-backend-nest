@@ -8,9 +8,26 @@ import { TopicsModule } from './topics/topics.module';
 import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 import { HeaderValidationMiddleware } from './pipes/requestHeader';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ArticlesModule, CommentsModule, TopicsModule, UsersModule],
+  imports: [
+    ArticlesModule,
+    CommentsModule,
+    TopicsModule,
+    UsersModule,
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT) || 3306,
+      username: process.env.DB_USERNAME || 'root',
+      database: process.env.DB_NAME || 'nc_news',
+      autoLoadEntities: true,
+      synchronize: true, // Avoid in production
+    }),
+  ],
   controllers: [AppController, ArticlesController, UsersController],
   providers: [AppService],
 })
