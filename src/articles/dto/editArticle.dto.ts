@@ -1,7 +1,4 @@
-import { Equals, IsInt } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { createArticleDto } from './createArticle.dto';
 
-export class editArticleDto {
-  @IsInt()
-  @Equals(1)
-  inc_votes: number;
-}
+export class editArticleDto extends PartialType(createArticleDto) {}

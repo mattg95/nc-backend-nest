@@ -15,6 +15,7 @@ import { editArticleDto } from './dto/editArticle.dto';
 import { createCommentDto } from 'src/comments/dto/createComments.dto';
 import { ArticlesService } from './articles.service';
 import { createArticleDto } from './dto/createArticle.dto';
+import { editArticleVotesDto } from './dto/editArticleVotes.dto';
 
 @Controller('articles')
 export class ArticlesController {
@@ -47,9 +48,15 @@ export class ArticlesController {
     this.articlesService.editArticle(id, body);
   }
 
-  @Get(':id/comments')
-  findOneComment(@Param('id', ParseIntPipe) id: string) {
-    this.articlesService.findOneComment(id);
+  @Patch(':id/votes')
+  @UsePipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: false }),
+  )
+  editArticleVotes(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: editArticleVotesDto,
+  ) {
+    this.articlesService.editArticleVotes(id, body);
   }
 
   @Post(':id/comments')

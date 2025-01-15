@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from 'src/entities/article.entity';
 import { createArticleDto } from './dto/createArticle.dto';
+import { editArticleVotesDto } from './dto/editArticleVotes.dto';
 
 @Injectable()
 export class ArticlesService {
@@ -16,20 +17,30 @@ export class ArticlesService {
   async findAllArticles(sortBy: sortByString) {
     return await this.articlesRepo.find();
   }
+
   async findOneArticle(id: number) {
     const article = await this.articlesRepo.findOne({
       where: {
         id,
       },
     });
-    console.log(article);
     if (!article) throw new NotFoundException();
     return article;
   }
   async editArticle(id: number, body: editArticleDto) {
-    // return await this.articlesRepo.update({ id }, body);
+    return await this.articlesRepo.update({ id }, body);
   }
-  findOneComment(id: string) {}
+
+  async editArticleVotes(articleId: number, increment: editArticleVotesDto) {
+    const article = await this.articlesRepo.findOne({
+      where: { id: articleId },
+    });
+    if (!article) {
+      throw new NotFoundException(`Article with ID ${articleId} not found`);
+    }
+    article.votes += increment.inc_votes;
+    await this.articlesRepo.save(article);
+  }
 
   async createArticle(dto: createArticleDto) {
     return await this.articlesRepo.save(dto);
