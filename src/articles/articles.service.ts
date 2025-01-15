@@ -15,7 +15,24 @@ export class ArticlesService {
   ) {}
 
   async findAllArticles(sortBy: sortByString) {
-    return await this.articlesRepo.find();
+    return await this.articlesRepo
+      .createQueryBuilder('article')
+      .leftJoinAndSelect(
+        (qb) =>
+          qb
+            .from('comments', 'comment')
+            .select('comment.articleId', 'articleId')
+            .addSelect('COUNT(comment.id)', 'comment_count')
+            .groupBy('comment.articleId'),
+        'comment_count',
+        'comment_count.articleId = article.id',
+      )
+      .addSelect('comment_count.comment_count')
+      .orderBy(
+        sortBy === 'votes' ? 'article.votes' : 'comment_count.comment_count',
+        'DESC',
+      )
+      .getMany();
   }
 
   async findOneArticle(id: number) {
