@@ -13,7 +13,9 @@ export class ArticlesService {
     @InjectRepository(Article) private articlesRepo: Repository<Article>,
   ) {}
 
-  findAllArticles(sortBy: sortByString) {}
+  async findAllArticles(sortBy: sortByString) {
+    return await this.articlesRepo.find();
+  }
   async findOneArticle(id: number) {
     const article = await this.articlesRepo.findOne({
       where: {
@@ -24,11 +26,17 @@ export class ArticlesService {
     if (!article) throw new NotFoundException();
     return article;
   }
-  editArticle(body: editArticleDto) {}
+  async editArticle(id: number, body: editArticleDto) {
+    // return await this.articlesRepo.update({ id }, body);
+  }
   findOneComment(id: string) {}
 
   async createArticle(dto: createArticleDto) {
     return await this.articlesRepo.save(dto);
+  }
+
+  async deleteArticle(id: number) {
+    return await this.articlesRepo.delete({ id });
   }
 
   async createComment(dto: createCommentDto) {

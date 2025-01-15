@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -39,8 +40,11 @@ export class ArticlesController {
   @UsePipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: false }),
   )
-  editArticle(@Body() body: editArticleDto) {
-    this.articlesService.editArticle(body);
+  editArticle(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: editArticleDto,
+  ) {
+    this.articlesService.editArticle(id, body);
   }
 
   @Get(':id/comments')
@@ -52,5 +56,10 @@ export class ArticlesController {
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   createComment(@Body() dto: createCommentDto) {
     this.articlesService.createComment(dto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id) {
+    return this.articlesService.deleteArticle(id);
   }
 }
