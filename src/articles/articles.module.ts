@@ -7,12 +7,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Article } from 'src/entities/article.entity';
 import { Comment } from 'src/entities/comment.entity';
 import { User } from 'src/entities/user.entity';
+import { Topic } from 'src/entities/topic.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Article]),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([Comment]),
+    TypeOrmModule.forFeature([Topic]),
   ],
   controllers: [ArticlesController, CommentsController],
   providers: [AppService, ArticlesService],

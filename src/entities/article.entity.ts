@@ -2,6 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -9,6 +11,7 @@ import {
 import { DateTime } from 'luxon';
 import { Comment } from './comment.entity';
 import { User } from './user.entity';
+import { Topic } from './topic.entity';
 
 @Entity()
 export class Article {
@@ -17,9 +20,6 @@ export class Article {
 
   @Column()
   title: string;
-
-  @Column()
-  topic: string;
 
   @Column()
   body: string;
@@ -41,4 +41,8 @@ export class Article {
 
   @ManyToOne(() => User, (user) => user.articles)
   author: User;
+
+  @ManyToMany(() => Topic, (topic) => topic.articles)
+  @JoinTable()
+  topics: Topic[];
 }

@@ -2,18 +2,20 @@ import { sortByString } from 'src/types';
 import { editArticleDto } from './dto/editArticle.dto';
 import { createCommentDto } from 'src/comments/dto/createComments.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from 'src/entities/article.entity';
 import { createArticleDto } from './dto/createArticle.dto';
 import { editArticleVotesDto } from './dto/editArticleVotes.dto';
 import { User } from 'src/entities/user.entity';
+import { Topic } from 'src/entities/topic.entity';
 
 @Injectable()
 export class ArticlesService {
   constructor(
     @InjectRepository(Article) private articlesRepo: Repository<Article>,
     @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(Topic) private topicRepo: Repository<Topic>,
   ) {}
 
   async findAllArticles(sortBy: sortByString = 'votes') {
@@ -63,9 +65,14 @@ export class ArticlesService {
       throw new NotFoundException('User not found');
     }
 
+    const topics = await this.topicRepo.findBy({
+      id: In(dto.topics),
+    });
+
     const articleWithAuthor = this.articlesRepo.create({
       ...dto,
       author: user,
+      topics,
     });
 
     return await this.articlesRepo.save(articleWithAuthor);
@@ -91,9 +98,14 @@ export class ArticlesService {
       throw new NotFoundException('User not found');
     }
 
+    const topics = await this.topicRepo.findBy({
+      id: In(dto.topics),
+    });
+
     const article = this.articlesRepo.create({
       ...dto,
       author: user,
+      topics,
     });
 
     return await this.articlesRepo.save(article);

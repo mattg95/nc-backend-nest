@@ -1,4 +1,4 @@
-import { IsInt, IsString, Length } from 'class-validator';
+import { IsArray, IsInt, IsString, Length } from 'class-validator';
 
 export class createArticleDto {
   @IsInt()
@@ -12,7 +12,6 @@ export class createArticleDto {
   @IsString()
   body: string;
 
-  @Length(2, 50)
-  @IsString()
-  topic: string;
+  @IsArray()
+  topics: number[];
 }
