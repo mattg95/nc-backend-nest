@@ -2,11 +2,7 @@ import { IsInt, IsString, Length } from 'class-validator';
 
 export class createArticleDto {
   @IsInt()
-  userId: number;
-
-  @Length(2, 50)
-  @IsString()
-  author: string;
+  author: number;
 
   @Length(2, 50)
   @IsString()

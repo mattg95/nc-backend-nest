@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DateTime } from 'luxon';
 import { Comment } from './comment.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Article {
@@ -18,9 +20,6 @@ export class Article {
 
   @Column()
   topic: string;
-
-  @Column()
-  author: string;
 
   @Column()
   body: string;
@@ -39,4 +38,7 @@ export class Article {
 
   @OneToMany(() => Comment, (comment) => comment.article)
   comments: Comment[];
+
+  @ManyToOne(() => User, (user) => user.articles)
+  author: User;
 }
