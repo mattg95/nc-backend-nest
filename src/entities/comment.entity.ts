@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Article } from './article.entity';
 
 @Entity()
 export class Comment {
@@ -19,4 +20,7 @@ export class Comment {
 
   @Column({ default: 0 })
   votes: number;
+
+  @ManyToOne(() => Article, (article) => article.id)
+  article: Article;
 }

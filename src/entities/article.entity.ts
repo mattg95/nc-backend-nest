@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DateTime } from 'luxon';
+import { Comment } from './comment.entity';
 
 @Entity()
 export class Article {
@@ -34,4 +36,7 @@ export class Article {
 
   @Column({ default: 0 })
   votes: number;
+
+  @OneToMany(() => Comment, (comment) => comment.article)
+  comments: Comment[];
 }

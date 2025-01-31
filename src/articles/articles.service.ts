@@ -14,7 +14,7 @@ export class ArticlesService {
     @InjectRepository(Article) private articlesRepo: Repository<Article>,
   ) {}
 
-  async findAllArticles(sortBy: sortByString) {
+  async findAllArticles(sortBy: sortByString = 'votes') {
     return await this.articlesRepo
       .createQueryBuilder('article')
       .leftJoinAndSelect(
