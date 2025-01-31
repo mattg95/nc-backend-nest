@@ -43,6 +43,6 @@ export class Article {
   author: User;
 
   @ManyToMany(() => Topic, (topic) => topic.articles)
-  @JoinTable()
+  @JoinTable({ name: 'article_topics' })
   topics: Topic[];
 }
