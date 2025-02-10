@@ -21,7 +21,7 @@ export class Article {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ type: 'longtext' })
   body: string;
 
   @CreateDateColumn({

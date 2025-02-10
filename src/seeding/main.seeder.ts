@@ -9,11 +9,8 @@ export class MainSeeder implements Seeder {
     factoryManager: SeederFactoryManager,
   ): Promise<any> {
     console.log('seeding articles...');
-    const articleRepo = dataSource.getRepository(Article);
-    const articles = await articleRepo.save([]);
 
-    console.log('seeding users...');
-    const userFactory = factoryManager.get(User);
-    const users = await userFactory.saveMany(10);
+    const articlesFactory = factoryManager.get(Article);
+    await articlesFactory.saveMany(10);
   }
 }

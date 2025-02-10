@@ -1,11 +1,13 @@
+import { en, Faker } from '../../node_modules/@faker-js/faker';
 import { Article } from '../entities/article.entity';
 import { setSeederFactory } from 'typeorm-extension';
 
-export const ArticlesFactor = setSeederFactory(Article, (faker) => {
+export const ArticleFactory = setSeederFactory(Article, () => {
   const article = new Article();
-  article.body = faker.lorem.paragraphs();
-  article.title = faker.lorem.words();
-  article.votes = faker.number.int();
+  const faker = new Faker({ locale: en });
+  article.title = faker.lorem.sentence();
+  article.body = faker.lorem.lines();
+  article.votes = faker.number.int({ min: 0, max: 1000 });
 
   return article;
 });
