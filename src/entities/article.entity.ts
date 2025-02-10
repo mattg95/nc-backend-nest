@@ -39,7 +39,7 @@ export class Article {
   @OneToMany(() => Comment, (comment) => comment.article)
   comments: Comment[];
 
-  @ManyToOne(() => User, (user) => user.articles)
+  @ManyToOne(() => User, (user) => user.articles, { nullable: false })
   author: User;
 
   @ManyToMany(() => Topic, (topic) => topic.articles)
