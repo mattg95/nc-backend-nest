@@ -9,7 +9,7 @@ import { Article } from './article.entity';
 import { DateTime } from 'luxon';
 import { User } from './user.entity';
 
-@Entity()
+@Entity('comments')
 export class Comment {
   @PrimaryGeneratedColumn()
   id: number;
