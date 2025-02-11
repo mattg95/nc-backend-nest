@@ -27,8 +27,8 @@ export class Article {
   @CreateDateColumn({
     type: 'timestamp',
     transformer: {
-      to: () => DateTime.now().toISO(), // Convert to ISO string on save
-      from: (value: string) => DateTime.fromISO(value), // Convert to DateTime on retrieval
+      to: () => DateTime.now().toISO(),
+      from: (value: string) => DateTime.fromISO(value),
     },
   })
   createdAt: DateTime;

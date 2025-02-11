@@ -1,5 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Article } from './article.entity';
+import { DateTime } from 'luxon';
+import { User } from './user.entity';
 
 @Entity()
 export class Comment {
@@ -9,18 +17,23 @@ export class Comment {
   @Column()
   body: string;
 
-  @Column()
-  belongs_to: string;
+  @ManyToOne(() => User, (user) => user.articles, { nullable: false })
+  author: User;
 
-  @Column()
-  created_by: string;
-
-  @Column()
-  created_at: number;
+  @CreateDateColumn({
+    type: 'timestamp',
+    transformer: {
+      to: () => DateTime.now().toISO(),
+      from: (value: string) => DateTime.fromISO(value),
+    },
+  })
+  createdAt: DateTime;
 
   @Column({ default: 0 })
   votes: number;
 
-  @ManyToOne(() => Article, (article) => article.id)
+  @ManyToOne(() => Article, (article) => article.id, {
+    cascade: true,
+  })
   article: Article;
 }
