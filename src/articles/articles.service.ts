@@ -13,7 +13,7 @@ import { Topic } from 'src/entities/topic.entity';
 export class ArticlesService {
   constructor(
     @InjectRepository(Article) private articlesRepo: Repository<Article>,
-    @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(User) private usersRepo: Repository<User>,
     @InjectRepository(Topic) private topicRepo: Repository<Topic>,
   ) {}
 
@@ -56,7 +56,7 @@ export class ArticlesService {
       throw new NotFoundException(`Article with ID ${id} not found`);
     }
 
-    const user = await this.userRepo.findOne({
+    const user = await this.usersRepo.findOne({
       where: { id: dto.author },
     });
 
@@ -89,7 +89,7 @@ export class ArticlesService {
   }
 
   async createArticle(dto: createArticleDto) {
-    const user = await this.userRepo.findOne({
+    const user = await this.usersRepo.findOne({
       where: { id: dto.author },
     });
 
