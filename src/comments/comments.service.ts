@@ -6,6 +6,7 @@ import { createCommentDto } from './dto/createComment.dto';
 import { editCommentDto } from './dto/editComment.dto';
 import { editCommentVotesDto } from './dto/editCommentVotes.dto';
 import { User } from 'src/entities/user.entity';
+import { orderByString, sortByString } from 'src/types';
 
 @Injectable()
 export class CommentsService {
@@ -14,9 +15,17 @@ export class CommentsService {
     @InjectRepository(User) private userRepo: Repository<User>,
   ) {}
 
-  async findComments(article_id: number) {
-    return await this.commentsRepo.find({
+  async findComments(
+    article_id: number,
+    orderBy: orderByString,
+    sortBy: sortByString,
+  ) {
+    return this.commentsRepo.find({
       where: { article: { id: article_id } },
+      order: {
+        [sortBy === 'votes' ? 'article.votes' : 'comment.comment_count']:
+          orderBy,
+      },
     });
   }
 

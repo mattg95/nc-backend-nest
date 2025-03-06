@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { createCommentDto } from './dto/createComment.dto';
 import { editCommentVotesDto } from './dto/editCommentVotes.dto';
 import { editCommentDto } from './dto/editComment.dto';
 import { findCommentDto } from './dto/findComment.dto';
+import { orderByString, sortByString } from 'src/types';
 
 @Controller('comments')
 export class CommentsController {
@@ -21,8 +23,12 @@ export class CommentsController {
 
   @Get()
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
-  findComments(@Body() body: findCommentDto) {
-    return this.commentsService.findComments(body.article_id);
+  findComments(
+    @Body() body: findCommentDto,
+    @Query('sort_by') sortBy: sortByString,
+    @Query('order_by') orderBy: orderByString,
+  ) {
+    return this.commentsService.findComments(body.article_id, orderBy, sortBy);
   }
 
   @Post()

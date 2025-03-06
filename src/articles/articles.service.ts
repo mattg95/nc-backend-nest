@@ -17,25 +17,30 @@ export class ArticlesService {
     @InjectRepository(Topic) private topicRepo: Repository<Topic>,
   ) {}
 
-  async findAllArticles(sortBy: sortByString = 'votes') {
-    return await this.articlesRepo
+  async findAllArticles(sortBy: sortByString = 'votes', topic?: string) {
+    const query = this.articlesRepo
       .createQueryBuilder('article')
-      .leftJoinAndSelect(
-        (qb) =>
-          qb
-            .from('comments', 'comment')
-            .select('comment.articleId', 'articleId')
-            .addSelect('COUNT(comment.id)', 'comment_count')
-            .groupBy('comment.articleId'),
-        'comment_count',
-        'comment_count.articleId = article.id',
-      )
-      .addSelect('comment_count.comment_count')
-      .orderBy(
-        sortBy === 'votes' ? 'article.votes' : 'comment_count.comment_count',
-        'DESC',
-      )
-      .getMany();
+      .leftJoinAndSelect('article.topics', 'topic')
+      .leftJoinAndSelect('article.comments', 'comment')
+      .leftJoinAndSelect('article.author', 'author');
+
+    if (topic) {
+      query.where('topic.slug = :topic', { topic });
+    }
+
+    query.orderBy(
+      sortBy === 'votes' ? 'article.votes' : 'comment_count.comment_count',
+      'DESC',
+    );
+
+    const articles = await query.getMany();
+
+    return articles.map((article) => ({
+      ...article,
+      topics: article.topics.map((topic) => topic.slug),
+      author: article.author.username,
+      commentCount: article.comments.length,
+    }));
   }
 
   async findOneArticle(id: number) {

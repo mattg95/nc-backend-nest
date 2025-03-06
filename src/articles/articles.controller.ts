@@ -15,14 +15,18 @@ import { editArticleDto } from './dto/editArticle.dto';
 import { ArticlesService } from './articles.service';
 import { createArticleDto } from './dto/createArticle.dto';
 import { editArticleVotesDto } from './dto/editArticleVotes.dto';
+import { sortByString } from 'src/types';
 
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Get()
-  findAllArticles(@Query('sort_by') sortBy: 'comment_count') {
-    return this.articlesService.findAllArticles(sortBy);
+  findAllArticles(
+    @Query('sort_by') sortBy: sortByString,
+    @Query('topic') topic?: string,
+  ) {
+    return this.articlesService.findAllArticles(sortBy, topic);
   }
 
   @Get(':id')

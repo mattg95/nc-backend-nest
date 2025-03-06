@@ -11,16 +11,15 @@ import { validateSync } from 'class-validator';
 export class HeaderValidationMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
     const headers = req.headers;
-    console.log(headers);
 
     const dtoInstance = plainToInstance(HeadersDto, headers);
-    const errors = validateSync(dtoInstance, {
-      whitelist: true,
-    });
+    // const errors = validateSync(dtoInstance, {
+    //   whitelist: true,
+    // });
 
-    if (errors.length > 0) {
-      throw new BadRequestException(errors);
-    }
+    // if (errors.length > 0) {
+    //   throw new BadRequestException(errors);
+    // }
 
     next();
   }
