@@ -1,7 +1,8 @@
-import { Equals, IsInt } from 'class-validator';
+import { IsDefined, IsIn, IsInt } from 'class-validator';
 
 export class editArticleVotesDto {
+  @IsDefined()
   @IsInt()
-  @Equals(1)
+  @IsIn([1, -1])
   inc_votes: number;
 }

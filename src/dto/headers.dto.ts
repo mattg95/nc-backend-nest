@@ -3,6 +3,6 @@ import { IsString } from 'class-validator';
 
 export class HeadersDto {
   @IsString()
-  @Expose({ name: 'access-token' })
-  accessToken: string;
+  @Expose({ name: 'authorization' })
+  authorization: string;
 }

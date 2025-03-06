@@ -17,7 +17,7 @@ export class Comment {
   @Column()
   body: string;
 
-  @ManyToOne(() => User, (user) => user.articles, { nullable: false })
+  @ManyToOne(() => User, (user) => user.comments, { nullable: false })
   author: User;
 
   @CreateDateColumn({

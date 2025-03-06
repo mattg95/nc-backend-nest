@@ -13,13 +13,16 @@ import { CommentsService } from './comments.service';
 import { createCommentDto } from './dto/createComment.dto';
 import { editCommentVotesDto } from './dto/editCommentVotes.dto';
 import { editCommentDto } from './dto/editComment.dto';
+import { findCommentDto } from './dto/findComment.dto';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
-  @Get(':article_id')
-  findComments(@Param('article_id', ParseIntPipe) article_id: number) {
-    return this.commentsService.findComments(article_id);
+
+  @Get()
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  findComments(@Body() body: findCommentDto) {
+    return this.commentsService.findComments(body.article_id);
   }
 
   @Post()
@@ -40,6 +43,9 @@ export class CommentsController {
   }
 
   @Patch(':id/votes')
+  @UsePipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: false }),
+  )
   findOneComment(
     @Param('id', ParseIntPipe) id: number,
     @Body() votes: editCommentVotesDto,

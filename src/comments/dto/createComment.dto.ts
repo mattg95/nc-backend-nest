@@ -1,17 +1,15 @@
-import { IsInt, IsString, Length } from 'class-validator';
+import { IsDefined, IsInt, IsString, Length } from 'class-validator';
 
 export class createCommentDto {
-  @IsString()
-  @Length(2, 30)
-  username: string;
+  @IsDefined()
+  @IsInt()
+  author: number;
 
   @Length(2, 1000)
   @IsString()
   body: string;
 
+  @IsDefined()
   @IsInt()
   article_id: number;
-
-  @IsInt()
-  votes: number;
 }

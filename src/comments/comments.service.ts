@@ -5,22 +5,34 @@ import { Comment } from 'src/entities/comment.entity';
 import { createCommentDto } from './dto/createComment.dto';
 import { editCommentDto } from './dto/editComment.dto';
 import { editCommentVotesDto } from './dto/editCommentVotes.dto';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectRepository(Comment) private commentsRepo: Repository<Comment>,
+    @InjectRepository(User) private userRepo: Repository<User>,
   ) {}
 
   async findComments(article_id: number) {
     return await this.commentsRepo.find({
       where: { article: { id: article_id } },
-      relations: ['article'],
     });
   }
 
   async createComment(dto: createCommentDto) {
-    return await this.commentsRepo.save(dto);
+    const user = await this.userRepo.findOne({
+      where: { id: dto.author },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return await this.commentsRepo.save({
+      ...dto,
+      author: user,
+    });
   }
 
   async editCommentVotes(id: number, increment: editCommentVotesDto) {
@@ -34,7 +46,7 @@ export class CommentsService {
     await this.commentsRepo.save(comment);
   }
 
-  async editComment(id: number, body: editCommentDto) {
+  async editComment(id: number, dto: editCommentDto) {
     const comment = await this.commentsRepo.findOne({
       where: { id },
     });
@@ -45,7 +57,7 @@ export class CommentsService {
 
     const editedComment = this.commentsRepo.create({
       ...comment,
-      ...body,
+      body: dto.body,
     });
 
     return await this.commentsRepo.save(editedComment);
