@@ -12,7 +12,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { editArticleDto } from './dto/editArticle.dto';
-import { createCommentDto } from 'src/comments/dto/createComments.dto';
 import { ArticlesService } from './articles.service';
 import { createArticleDto } from './dto/createArticle.dto';
 import { editArticleVotesDto } from './dto/editArticleVotes.dto';
@@ -57,12 +56,6 @@ export class ArticlesController {
     @Body() body: editArticleVotesDto,
   ) {
     this.articlesService.editArticleVotes(id, body);
-  }
-
-  @Post(':id/comments')
-  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
-  createComment(@Body() dto: createCommentDto) {
-    this.articlesService.createComment(dto);
   }
 
   @Delete(':id')

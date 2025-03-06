@@ -1,6 +1,5 @@
 import { sortByString } from 'src/types';
 import { editArticleDto } from './dto/editArticle.dto';
-import { createCommentDto } from 'src/comments/dto/createComments.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -113,9 +112,5 @@ export class ArticlesService {
 
   async deleteArticle(id: number) {
     return await this.articlesRepo.delete({ id });
-  }
-
-  async createComment(dto: createCommentDto) {
-    return await this.articlesRepo.save(dto);
   }
 }
