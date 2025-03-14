@@ -27,6 +27,8 @@ export class ArticlesController {
     @Query('order') orderBy?: orderByString,
     @Query('topic') topic?: string,
   ) {
+    console.log(sortBy);
+
     return this.articlesService.findAllArticles(topic, sortBy, orderBy);
   }
 

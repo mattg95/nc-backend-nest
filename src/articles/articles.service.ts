@@ -26,16 +26,21 @@ export class ArticlesService {
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.topics', 'topic')
       .leftJoinAndSelect('article.comments', 'comment')
-      .leftJoinAndSelect('article.author', 'author');
+      .leftJoinAndSelect('article.author', 'author')
+      .addSelect(
+        '(SELECT COUNT(*) FROM comments WHERE comments.articleId = article.id)',
+        'commentCount',
+      );
 
     const order = (orderBy ? orderBy.toUpperCase() : 'DESC') as 'ASC' | 'DESC';
 
     if (topic) {
       query.where('topic.slug = :topic', { topic });
     }
+    console.log(sortBy);
 
     query.orderBy(
-      sortBy === 'votes' ? 'article.votes' : 'comment.comment_count',
+      sortBy === 'commentCount' ? 'commentCount' : `article.${sortBy}`,
       order,
     );
 
