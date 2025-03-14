@@ -1,4 +1,4 @@
-import { sortByString } from 'src/types';
+import { orderByString, sortByString } from 'src/types';
 import { editArticleDto } from './dto/editArticle.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { In, Repository } from 'typeorm';
@@ -17,20 +17,26 @@ export class ArticlesService {
     @InjectRepository(Topic) private topicRepo: Repository<Topic>,
   ) {}
 
-  async findAllArticles(sortBy: sortByString = 'votes', topic?: string) {
+  async findAllArticles(
+    topic?: string,
+    sortBy: sortByString = 'votes',
+    orderBy?: orderByString,
+  ) {
     const query = this.articlesRepo
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.topics', 'topic')
       .leftJoinAndSelect('article.comments', 'comment')
       .leftJoinAndSelect('article.author', 'author');
 
+    const order = (orderBy ? orderBy.toUpperCase() : 'DESC') as 'ASC' | 'DESC';
+
     if (topic) {
       query.where('topic.slug = :topic', { topic });
     }
 
     query.orderBy(
-      sortBy === 'votes' ? 'article.votes' : 'comment_count.comment_count',
-      'DESC',
+      sortBy === 'votes' ? 'article.votes' : 'comment.comment_count',
+      order,
     );
 
     const articles = await query.getMany();

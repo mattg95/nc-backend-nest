@@ -15,7 +15,7 @@ import { editArticleDto } from './dto/editArticle.dto';
 import { ArticlesService } from './articles.service';
 import { createArticleDto } from './dto/createArticle.dto';
 import { editArticleVotesDto } from './dto/editArticleVotes.dto';
-import { sortByString } from 'src/types';
+import { orderByString, sortByString } from 'src/types';
 
 @Controller('articles')
 export class ArticlesController {
@@ -23,10 +23,11 @@ export class ArticlesController {
 
   @Get()
   findAllArticles(
-    @Query('sort_by') sortBy: sortByString,
+    @Query('sort_by') sortBy?: sortByString,
+    @Query('order') orderBy?: orderByString,
     @Query('topic') topic?: string,
   ) {
-    return this.articlesService.findAllArticles(sortBy, topic);
+    return this.articlesService.findAllArticles(topic, sortBy, orderBy);
   }
 
   @Get(':id')
