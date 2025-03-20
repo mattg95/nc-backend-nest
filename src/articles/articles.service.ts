@@ -37,7 +37,6 @@ export class ArticlesService {
     if (topic) {
       query.where('topic.slug = :topic', { topic });
     }
-    console.log(sortBy);
 
     query.orderBy(
       sortBy === 'commentCount' ? 'commentCount' : `article.${sortBy}`,

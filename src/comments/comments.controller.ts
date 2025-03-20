@@ -14,7 +14,6 @@ import { CommentsService } from './comments.service';
 import { createCommentDto } from './dto/createComment.dto';
 import { editCommentVotesDto } from './dto/editCommentVotes.dto';
 import { editCommentDto } from './dto/editComment.dto';
-import { findCommentDto } from './dto/findComment.dto';
 import { orderByString, sortByString } from 'src/types';
 
 @Controller('comments')
@@ -24,11 +23,11 @@ export class CommentsController {
   @Get()
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   findComments(
-    @Body() body: findCommentDto,
+    @Query('article_id') articleId: number,
     @Query('sort_by') sortBy: sortByString,
     @Query('order_by') orderBy: orderByString,
   ) {
-    return this.commentsService.findComments(body.article_id, orderBy, sortBy);
+    return this.commentsService.findComments(articleId, orderBy, sortBy);
   }
 
   @Post()
