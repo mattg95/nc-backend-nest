@@ -20,13 +20,22 @@ export class CommentsService {
     orderBy: orderByString,
     sortBy: sortByString,
   ) {
-    return this.commentsRepo.find({
-      where: { article: { id: article_id } },
-      order: {
-        [sortBy === 'votes' ? 'article.votes' : 'comment.comment_count']:
-          orderBy,
-      },
-    });
+    return this.commentsRepo
+      .createQueryBuilder('comment')
+      .leftJoin('comment.author', 'author')
+      .select([
+        'comment.id AS id',
+        'comment.body AS body',
+        'comment.createdAt AS createdAt',
+        'comment.votes AS votes',
+        'author.name AS author',
+      ])
+      .where('comment.articleId = :articleId', { articleId: article_id })
+      .orderBy(
+        sortBy === 'votes' ? 'comment.votes' : 'comment.id',
+        (orderBy?.toUpperCase() as 'ASC' | 'DESC') ?? 'ASC',
+      )
+      .getRawMany();
   }
 
   async createComment(dto: createCommentDto) {
