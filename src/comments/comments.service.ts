@@ -31,6 +31,7 @@ export class CommentsService {
         'comment.createdAt AS createdAt',
         'comment.votes AS votes',
         'author.name AS author',
+        'author.id AS authorId',
       ])
       .where('comment.articleId = :articleId', { articleId: article_id })
       .orderBy(
@@ -53,11 +54,20 @@ export class CommentsService {
       throw new NotFoundException('User not found');
     }
 
-    return await this.commentsRepo.save({
+    const savedComment = await this.commentsRepo.save({
       ...dto,
       author: user,
       article,
     });
+
+    return {
+      id: savedComment.id,
+      body: savedComment.body,
+      createdAt: savedComment.createdAt,
+      votes: savedComment.votes,
+      author: user.name,
+      authorId: user.id,
+    };
   }
 
   async editCommentVotes(id: number, increment: editCommentVotesDto) {
@@ -86,5 +96,17 @@ export class CommentsService {
     });
 
     return await this.commentsRepo.save(editedComment);
+  }
+
+  async deleteComment(id: number): Promise<{ message: string }> {
+    const comment = await this.commentsRepo.findOne({ where: { id } });
+
+    if (!comment) {
+      throw new NotFoundException(`Comment with ID ${id} not found`);
+    }
+
+    await this.commentsRepo.remove(comment);
+
+    return { message: `Comment with ID ${id} has been deleted` };
   }
 }

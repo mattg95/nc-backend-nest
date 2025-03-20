@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -56,5 +57,11 @@ export class CommentsController {
     @Body() votes: editCommentVotesDto,
   ) {
     return this.commentsService.editCommentVotes(id, votes);
+  }
+
+  @Delete(':id')
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  deleteComment(@Param('id', ParseIntPipe) id: number) {
+    return this.commentsService.deleteComment(id);
   }
 }
