@@ -7,12 +7,14 @@ import { editCommentDto } from './dto/editComment.dto';
 import { editCommentVotesDto } from './dto/editCommentVotes.dto';
 import { User } from 'src/entities/user.entity';
 import { orderByString, sortByString } from 'src/types';
+import { Article } from 'src/entities/article.entity';
 
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectRepository(Comment) private commentsRepo: Repository<Comment>,
     @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(Article) private articleRepo: Repository<Article>,
   ) {}
 
   async findComments(
@@ -43,6 +45,10 @@ export class CommentsService {
       where: { id: dto.author },
     });
 
+    const article = await this.articleRepo.findOne({
+      where: { id: dto.article_id },
+    });
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -50,6 +56,7 @@ export class CommentsService {
     return await this.commentsRepo.save({
       ...dto,
       author: user,
+      article,
     });
   }
 
