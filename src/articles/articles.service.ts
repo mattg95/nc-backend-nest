@@ -18,25 +18,30 @@ export class ArticlesService {
   ) {}
 
   async findAllArticles(
-    topic?: string,
+    topicId?: number,
     sortBy: sortByString = 'votes',
     orderBy?: orderByString,
   ) {
     const query = this.articlesRepo
       .createQueryBuilder('article')
-      .leftJoinAndSelect('article.topics', 'topic')
       .leftJoinAndSelect('article.comments', 'comment')
       .leftJoinAndSelect('article.author', 'author')
+      .leftJoinAndSelect('article.topics', 'topic') // Ensure topics are included
       .addSelect(
         '(SELECT COUNT(*) FROM comments WHERE comments.articleId = article.id)',
         'commentCount',
       );
 
-    const order = (orderBy ? orderBy.toUpperCase() : 'DESC') as 'ASC' | 'DESC';
-
-    if (topic) {
-      query.where('topic.slug = :topic', { topic });
+    if (topicId) {
+      query.andWhere(
+        `article.id IN (
+            SELECT article_topics.articlesId FROM article_topics WHERE article_topics.topicsId = :topicId
+          )`,
+        { topicId },
+      );
     }
+
+    const order = (orderBy ? orderBy.toUpperCase() : 'DESC') as 'ASC' | 'DESC';
 
     if (sortBy) {
       query.orderBy(
@@ -47,12 +52,14 @@ export class ArticlesService {
 
     const articles = await query.getMany();
 
-    return articles.map((article) => ({
-      ...article,
-      topics: article.topics.map((topic) => topic.slug),
-      author: article.author.username,
-      commentCount: article.comments.length,
-    }));
+    return articles.map((article) => {
+      return {
+        ...article,
+        author: article.author.username,
+        commentCount: article.comments.length,
+        topics: article.topics, // Expanding all topics associated with the article
+      };
+    });
   }
 
   async findOneArticle(id: number) {

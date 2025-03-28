@@ -25,9 +25,9 @@ export class ArticlesController {
   findAllArticles(
     @Query('sort_by') sortBy?: sortByString,
     @Query('order') orderBy?: orderByString,
-    @Query('topic') topic?: string,
+    @Query('topic_id') topicId?: number,
   ) {
-    return this.articlesService.findAllArticles(topic, sortBy, orderBy);
+    return this.articlesService.findAllArticles(topicId, sortBy, orderBy);
   }
 
   @Get(':id')
