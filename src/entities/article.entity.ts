@@ -1,6 +1,5 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -12,6 +11,7 @@ import { DateTime } from 'luxon';
 import { Comment } from './comment.entity';
 import { User } from './user.entity';
 import { Topic } from './topic.entity';
+import { DateTimeTransformer } from '../transformers/dateTimeTransformer';
 
 @Entity('articles')
 export class Article {
@@ -24,12 +24,9 @@ export class Article {
   @Column({ type: 'longtext' })
   body: string;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    transformer: {
-      to: () => DateTime.now().toISO(),
-      from: (value: string) => DateTime.fromISO(value),
-    },
+  @Column({
+    type: 'datetime',
+    transformer: DateTimeTransformer('datetime'),
   })
   createdAt: DateTime;
 

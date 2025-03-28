@@ -8,6 +8,7 @@ import {
 import { Article } from './article.entity';
 import { DateTime } from 'luxon';
 import { User } from './user.entity';
+import { DateTimeTransformer } from '../transformers/dateTimeTransformer';
 
 @Entity('comments')
 export class Comment {
@@ -22,10 +23,7 @@ export class Comment {
 
   @CreateDateColumn({
     type: 'timestamp',
-    transformer: {
-      to: () => DateTime.now().toISO(),
-      from: (value: string) => DateTime.fromISO(value),
-    },
+    transformer: DateTimeTransformer('datetime'),
   })
   createdAt: DateTime;
 

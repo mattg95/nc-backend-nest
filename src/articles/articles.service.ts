@@ -38,10 +38,12 @@ export class ArticlesService {
       query.where('topic.slug = :topic', { topic });
     }
 
-    query.orderBy(
-      sortBy === 'commentCount' ? 'commentCount' : `article.${sortBy}`,
-      order,
-    );
+    if (sortBy) {
+      query.orderBy(
+        sortBy === 'commentCount' ? 'commentCount' : `article.${sortBy}`,
+        order,
+      );
+    }
 
     const articles = await query.getMany();
 
