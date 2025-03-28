@@ -7,7 +7,6 @@ import { ArticleFactory } from './article.factory';
 import { CommentsFactory } from './comment.factory';
 import { TopicFactory } from './topic.factory';
 import { UserFactory } from './user.factory';
-const synchronizeFlag = process.argv.includes('--synchronize');
 
 const options: DataSourceOptions & SeederOptions = {
   ...(dbConfig as DataSourceOptions),
@@ -20,7 +19,7 @@ const datasource = new DataSource(options);
 datasource
   .initialize()
   .then(async () => {
-    await datasource.synchronize(synchronizeFlag);
+    await datasource.synchronize(true);
     await runSeeders(datasource);
     console.log('✅ Seeding completed!');
     process.exit();

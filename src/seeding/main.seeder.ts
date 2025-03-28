@@ -33,8 +33,8 @@ export class MainSeeder implements Seeder {
       for (const article of articlesForUser) {
         article.author = user;
 
-        const numberOfTopics = Math.floor(Math.random() * 4);
-        const randomTopicIndex = Math.floor(Math.random() * topics.length);
+        const numberOfTopics = Math.floor(Math.random() * 4) + 1;
+        const randomTopicIndex = Math.floor(Math.random() * numberOfTopics);
         const topicsForArticle = topics.slice(randomTopicIndex, numberOfTopics);
         article.topics = topicsForArticle;
 
