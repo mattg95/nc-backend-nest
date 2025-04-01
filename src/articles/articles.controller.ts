@@ -16,6 +16,7 @@ import { ArticlesService } from './articles.service';
 import { createArticleDto } from './dto/createArticle.dto';
 import { editArticleVotesDto } from './dto/editArticleVotes.dto';
 import { orderByString, sortByString } from 'src/types';
+import { PaginationDTO } from 'src/dto/pagination.dto';
 
 @Controller('articles')
 export class ArticlesController {
@@ -23,11 +24,17 @@ export class ArticlesController {
 
   @Get()
   findAllArticles(
+    @Query() pagination: PaginationDTO,
     @Query('sort_by') sortBy?: sortByString,
     @Query('order') orderBy?: orderByString,
     @Query('topic_id') topicId?: number,
   ) {
-    return this.articlesService.findAllArticles(topicId, sortBy, orderBy);
+    return this.articlesService.findAllArticles(
+      pagination,
+      topicId,
+      sortBy,
+      orderBy,
+    );
   }
 
   @Get(':id')

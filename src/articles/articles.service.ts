@@ -8,6 +8,8 @@ import { createArticleDto } from './dto/createArticle.dto';
 import { editArticleVotesDto } from './dto/editArticleVotes.dto';
 import { User } from 'src/entities/user.entity';
 import { Topic } from 'src/entities/topic.entity';
+import { PaginationDTO } from 'src/dto/pagination.dto';
+import { DEFAULT_PAGE_SIZE } from 'src/config';
 
 @Injectable()
 export class ArticlesService {
@@ -18,6 +20,7 @@ export class ArticlesService {
   ) {}
 
   async findAllArticles(
+    pagination: PaginationDTO,
     topicId?: number,
     sortBy: sortByString = 'votes',
     orderBy?: orderByString,
@@ -49,6 +52,8 @@ export class ArticlesService {
         order,
       );
     }
+
+    query.skip(pagination.skip).take(pagination.limit ?? DEFAULT_PAGE_SIZE);
 
     const articles = await query.getMany();
 
