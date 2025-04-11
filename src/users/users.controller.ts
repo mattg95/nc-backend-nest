@@ -1,18 +1,27 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
   ParseIntPipe,
+  Post,
   Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { PaginationDTO } from 'src/dto/pagination.dto';
+import { createUserDto } from './dto/createUser.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  createUser(@Body() createUserDto: createUserDto) {
+    return this.usersService.createUser(createUserDto);
+  }
 
   @Get()
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))

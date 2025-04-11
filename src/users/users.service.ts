@@ -4,10 +4,16 @@ import { DEFAULT_PAGE_SIZE } from 'src/config';
 import { PaginationDTO } from 'src/dto/pagination.dto';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
+import { createUserDto } from './dto/createUser.dto';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private usersRepo: Repository<User>) {}
+
+  async createUser(user: createUserDto) {
+    const newUser = await this.usersRepo.create(user);
+    return await this.usersRepo.save(newUser);
+  }
 
   async findAllUsers(pagination: PaginationDTO) {
     return await this.usersRepo.find({

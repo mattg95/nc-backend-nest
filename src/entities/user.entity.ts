@@ -1,7 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Article } from './article.entity';
 import { Comment } from './comment.entity';
-
+import * as bcrypt from 'bcrypt';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -13,6 +19,12 @@ export class User {
   @Column()
   name: string;
 
+  @Column()
+  password: string;
+
+  @Column()
+  email: string;
+
   @Column({ nullable: true })
   avatar_url: string | null;
 
@@ -21,4 +33,9 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.author)
   comments: Comment[];
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }
