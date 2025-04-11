@@ -10,7 +10,6 @@ import { UsersModule } from './users/users.module';
 import { HeaderValidationMiddleware } from './pipes/requestHeader';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { Article } from './entities/article.entity';
 import { dbConfig } from './dbConfig';
 
 @Module({
@@ -19,7 +18,7 @@ import { dbConfig } from './dbConfig';
     CommentsModule,
     TopicsModule,
     UsersModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(dbConfig),
   ],
   controllers: [AppController, ArticlesController, UsersController],
