@@ -3,13 +3,13 @@ import { editArticleDto } from './dto/editArticle.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Article } from 'src/entities/article.entity';
+import { Article } from '../entities/article.entity';
 import { createArticleDto } from './dto/createArticle.dto';
 import { editArticleVotesDto } from './dto/editArticleVotes.dto';
-import { User } from 'src/entities/user.entity';
-import { Topic } from 'src/entities/topic.entity';
-import { PaginationDTO } from 'src/dto/pagination.dto';
-import { DEFAULT_PAGE_SIZE } from 'src/config';
+import { User } from '../entities/user.entity';
+import { Topic } from '../entities/topic.entity';
+import { PaginationDTO } from '../dto/pagination.dto';
+import { DEFAULT_PAGE_SIZE } from '../config';
 
 @Injectable()
 export class ArticlesService {

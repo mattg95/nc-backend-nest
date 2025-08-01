@@ -16,7 +16,7 @@ import { ArticlesService } from './articles.service';
 import { createArticleDto } from './dto/createArticle.dto';
 import { editArticleVotesDto } from './dto/editArticleVotes.dto';
 import { orderByString, sortByString } from 'src/types';
-import { PaginationDTO } from 'src/dto/pagination.dto';
+import { PaginationDTO } from '../dto/pagination.dto';
 
 @Controller('articles')
 export class ArticlesController {
