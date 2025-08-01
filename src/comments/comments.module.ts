@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CommentsController } from './comments.controller';
 import { CommentsService } from './comments.service';
-import { Comment } from 'src/entities/comment.entity';
-import { TopicsModule } from 'src/topics/topics.module';
+import { Comment } from '../entities/comment.entity';
+import { TopicsModule } from '../topics/topics.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
-import { Article } from 'src/entities/article.entity';
+import { User } from '../entities/user.entity';
+import { Article } from '../entities/article.entity';
 
 @Module({
   imports: [

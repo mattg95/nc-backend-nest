@@ -15,7 +15,7 @@ import { CommentsService } from './comments.service';
 import { createCommentDto } from './dto/createComment.dto';
 import { editCommentVotesDto } from './dto/editCommentVotes.dto';
 import { editCommentDto } from './dto/editComment.dto';
-import { orderByString, sortByString } from 'src/types';
+import { orderByString, sortByString } from '../types';
 
 @Controller('comments')
 export class CommentsController {
