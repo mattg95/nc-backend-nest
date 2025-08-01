@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DEFAULT_PAGE_SIZE } from 'src/config';
-import { PaginationDTO } from 'src/dto/pagination.dto';
-import { Topic } from 'src/entities/topic.entity';
+import { DEFAULT_PAGE_SIZE } from '../config';
+import { PaginationDTO } from '../dto/pagination.dto';
+import { Topic } from '../entities/topic.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

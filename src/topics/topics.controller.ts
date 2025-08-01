@@ -6,7 +6,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { TopicsService } from './topics.service';
-import { PaginationDTO } from 'src/dto/pagination.dto';
+import { PaginationDTO } from '../dto/pagination.dto';
 
 @Controller('topics')
 export class TopicsController {
