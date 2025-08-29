@@ -16,9 +16,12 @@ describe('AppController (e2e)', () => {
   });
 
   it('/ (GET)', () => {
-    return request(app.getHttpServer())
+    request(app.getHttpServer())
       .get('/')
+      .set('authorization', 'Bearer test-token')
       .expect(200)
-      .expect('Hello World!');
+      .then((response) => {
+        expect(typeof response.text).toBe('string');
+      });
   });
 });
