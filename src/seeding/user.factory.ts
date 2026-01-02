@@ -12,5 +12,7 @@ export const UserFactory = setSeederFactory(User, () => {
   user.name = name;
   user.username =
     firstName + faker.number.int({ max: 100 }) + faker.person.zodiacSign();
+  user.email = faker.internet.email({ firstName });
+  user.password = 'password123'; // This will be hashed by the @BeforeInsert hook
   return user;
 });
