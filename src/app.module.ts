@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArticlesModule } from './articles/articles.module';
@@ -45,6 +50,16 @@ import { Comment } from './entities/comment.entity';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(HeaderValidationMiddleware).forRoutes('*');
+    consumer
+      .apply(HeaderValidationMiddleware)
+      .forRoutes(
+        { path: 'articles', method: RequestMethod.POST },
+        { path: 'articles/:id', method: RequestMethod.PATCH },
+        { path: 'articles/:id', method: RequestMethod.DELETE },
+        { path: 'comments', method: RequestMethod.POST },
+        { path: 'comments/:id', method: RequestMethod.PATCH },
+        { path: 'comments/:id', method: RequestMethod.DELETE },
+        { path: 'users', method: RequestMethod.POST },
+      );
   }
 }
