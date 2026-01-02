@@ -9,17 +9,36 @@ import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 import { HeaderValidationMiddleware } from './pipes/requestHeader';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import { dbConfig } from './dbConfig';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Article } from './entities/article.entity';
+import { User } from './entities/user.entity';
+import { Topic } from './entities/topic.entity';
+import { Comment } from './entities/comment.entity';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+    }),
+    TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DB_HOST', 'localhost'),
+        port: configService.get('DB_PORT', 3306),
+        username: configService.get('DB_USERNAME', 'root'),
+        password: configService.get('DB_PASSWORD', ''),
+        database: configService.get('DB_NAME', 'nc_news'),
+        entities: [Article, User, Topic, Comment],
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
+      inject: [ConfigService],
+    }),
     ArticlesModule,
     CommentsModule,
     TopicsModule,
     UsersModule,
-    ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot(dbConfig),
   ],
   controllers: [AppController, ArticlesController, UsersController],
   providers: [AppService],

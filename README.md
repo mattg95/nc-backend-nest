@@ -24,7 +24,92 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+NC News Backend - A NestJS REST API with MySQL database.
+
+## Prerequisites
+
+- Node.js (v18+)
+- Docker & Docker Compose
+- Yarn package manager
+
+## Quick Start (First Time Setup)
+
+```bash
+# 1. Install dependencies, start database, and seed data
+yarn setup
+
+# 2. Start the development server
+yarn dev
+```
+
+Your API will be running at `http://localhost:3000`
+
+## Manual Setup
+
+```bash
+# Install dependencies
+yarn install
+
+# Start MySQL database in Docker
+yarn db:start
+
+# Seed the database with test data
+yarn seed
+```
+
+## Available Scripts
+
+### Development
+
+```bash
+yarn start:dev          # Start development server with hot reload
+yarn dev                # Start database + development server
+```
+
+### Database Management
+
+```bash
+yarn db:setup           # Start database and seed data
+yarn db:start           # Start MySQL container
+yarn db:stop            # Stop MySQL container
+yarn db:restart         # Restart MySQL container
+yarn db:reset           # Reset database (WARNING: deletes all data)
+yarn db:logs            # View MySQL logs
+yarn db:shell           # Access MySQL shell
+yarn seed               # Seed database with test data
+```
+
+### Testing
+
+```bash
+yarn test               # Run unit tests
+yarn test:watch         # Run tests in watch mode
+yarn test:cov           # Run tests with coverage
+yarn test:e2e           # Run end-to-end tests
+```
+
+### Other
+
+```bash
+yarn build              # Build for production
+yarn start:prod         # Run production build
+yarn lint               # Lint and fix code
+yarn format             # Format code with Prettier
+```
+
+## Environment Configuration
+
+The project uses different environment files:
+
+- `.env.development` - Development environment (default)
+- `.env.test` - Test environment
+- `.env.production` - Production environment (gitignored)
+
+To switch environments, use:
+
+```bash
+NODE_ENV=production yarn start:prod
+```
 
 ## Project setup
 
